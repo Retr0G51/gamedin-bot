@@ -663,7 +663,7 @@ async def confirmar_pedido(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 3️⃣ Recibirás tu compra en Free Fire
 
 **📱 CONTACTO:**
-WhatsApp: +55059350
+WhatsApp: +5355059350
 
 ¡Gracias por elegir GAMEDIN! 🎮
     """
