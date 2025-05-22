@@ -879,7 +879,7 @@ def main() -> None:
     application.add_handler(CallbackQueryHandler(ayuda, pattern="^ayuda$"))
     application.add_handler(CallbackQueryHandler(ayuda_id, pattern="^ayuda_id$"))
     application.add_handler(CallbackQueryHandler(menu_principal, pattern="^menu_principal$"))
-    
+    application.add_handler(CallbackQueryHandler(iniciar_pedido, pattern="^hacer_pedido$"))
     # Iniciar el bot
     print("🎮 Bot GAMEDIN iniciando...")
     print("✅ Presiona Ctrl+C para detener")
