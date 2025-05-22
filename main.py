@@ -602,7 +602,7 @@ async def ingresar_contacto(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     
     keyboard = [
         [InlineKeyboardButton("✅ Confirmar Pedido", callback_data="confirmar_si")],
-        [InlineKeyboardButton("✏️ Modificar", callback_data="hacer_pedido")],
+        [InlineKeyboardButton("✏️ Modificar", callback_data="modificar_pedido")]
         [InlineKeyboardButton("❌ Cancelar", callback_data="cancelar_compra")]
     ]
     
@@ -718,6 +718,48 @@ Total: ${cantidad_data['precio']} MXN
     context.user_data.clear()
     
     return ConversationHandler.END
+
+async def modificar_pedido(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Permite modificar el pedido desde la confirmación"""
+    query = update.callback_query
+    await query.answer()
+    
+    # Limpiar datos del pedido actual pero mantener usuario
+    if 'producto' in context.user_data:
+        del context.user_data['producto']
+    if 'cantidad_key' in context.user_data:
+        del context.user_data['cantidad_key']
+    if 'id_juego' in context.user_data:
+        del context.user_data['id_juego']
+    
+    logger.info("Usuario decidió modificar su pedido")
+    
+    selection_text = """
+🛒 **COMPRAR - PASO 1/6**
+
+🎮 **¿Qué quieres comprar para Free Fire?**
+
+Selecciona el tipo de producto:
+    """
+    
+    keyboard = []
+    for key, producto in PRODUCTOS.items():
+        keyboard.append([InlineKeyboardButton(
+            producto['nombre'],
+            callback_data=f"producto_{key}"
+        )])
+    
+    keyboard.append([InlineKeyboardButton("❌ Cancelar", callback_data="cancelar_compra")])
+    
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    await query.message.reply_text(
+        selection_text,
+        reply_markup=reply_markup,
+        parse_mode='Markdown'
+    )
+    
+    return SELECCIONAR_PRODUCTO
 
 async def cancelar_compra(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Cancela la compra actual"""
@@ -880,6 +922,8 @@ def main() -> None:
     application.add_handler(CallbackQueryHandler(ayuda_id, pattern="^ayuda_id$"))
     application.add_handler(CallbackQueryHandler(menu_principal, pattern="^menu_principal$"))
     application.add_handler(CallbackQueryHandler(iniciar_pedido, pattern="^hacer_pedido$"))
+    application.add_handler(CallbackQueryHandler(modificar_pedido, pattern="^modificar_pedido$"))
+    
     # Iniciar el bot
     print("🎮 Bot GAMEDIN iniciando...")
     print("✅ Presiona Ctrl+C para detener")
