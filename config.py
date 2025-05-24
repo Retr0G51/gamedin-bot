@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuración desde variables de entorno
-BOT_TOKEN = os.getenv('BOT_TOKEN', '8152750709:AAGRfGHIgeti7rGWCpUaeTs2LgmBiTFtCqA')
+BOT_TOKEN = os.getenv('BOT_TOKEN', '7589496460:AAFR4tKNT3cSAX4pc55x6uaqEdMA2oc1hFI')
 GRUPO_PEDIDOS_ID = os.getenv('GRUPO_PEDIDOS_ID', '-1002541246940')
 ADMIN_ID = os.getenv('ADMIN_ID', '5979848389')
 
